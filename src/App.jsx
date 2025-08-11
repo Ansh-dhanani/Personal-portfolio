@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { ModeToggle } from "@/components/ui/Mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import "./App.css";
 import ProjectCard from "./components/ui/ProjectCard";
 import History from "./components/ui/History";
 import ExperienceUI from "@/components/ui/ExperienceUI";
@@ -22,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ChevronDown } from "lucide-react";
+import "./App.css";
 
 function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +30,6 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isChevronAnimating, setIsChevronAnimating] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [hoveredNavItem, setHoveredNavItem] = useState(null);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -227,92 +225,28 @@ function App() {
       <GradualBlurEffect />
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100000] bg-background/80 backdrop-blur-sm border rounded-full px-4 py-2 flex items-center gap-3">
-          <div className="relative">
-            {hoveredNavItem === "GitHub" && (
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2">
-                <Badge className="bg-foreground text-background">GitHub</Badge>
-              </div>
-            )}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              asChild
-              onMouseEnter={() => setHoveredNavItem("GitHub")}
-              onMouseLeave={() => setHoveredNavItem(null)}
-            >
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-          <div className="relative">
-            {hoveredNavItem === "Twitter" && (
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2">
-                <Badge className="bg-foreground text-background">Twitter</Badge>
-              </div>
-            )}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              asChild
-              onMouseEnter={() => setHoveredNavItem("Twitter")}
-              onMouseLeave={() => setHoveredNavItem(null)}
-            >
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <Twitter className="h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-          <div className="relative">
-            {hoveredNavItem === "LinkedIn" && (
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2">
-                <Badge className="bg-foreground text-background">LinkedIn</Badge>
-              </div>
-            )}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              asChild
-              onMouseEnter={() => setHoveredNavItem("LinkedIn")}
-              onMouseLeave={() => setHoveredNavItem(null)}
-            >
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                <Linkedin className="h-4 w-4" />
-              </a>
-            </Button>
-          </div>
-          <div className="relative">
-            {hoveredNavItem === "Email" && (
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2">
-                <Badge className="bg-foreground text-background">Email</Badge>
-              </div>
-            )}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              asChild
-              onMouseEnter={() => setHoveredNavItem("Email")}
-              onMouseLeave={() => setHoveredNavItem(null)}
-            >
-              <a href="mailto:contact@example.com">
-                <Mail className="h-4 w-4" />
-              </a>
-            </Button>
-          </div>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <Github className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <Twitter className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="mailto:contact@example.com">
+              <Mail className="h-4 w-4" />
+            </a>
+          </Button>
           <div className="w-px h-6 bg-foreground/20 mx-1"></div>
-          <div className="relative">
-            {hoveredNavItem === "Theme" && (
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2">
-                <Badge className="bg-foreground text-background">Theme</Badge>
-              </div>
-            )}
-            <div 
-              onMouseEnter={() => setHoveredNavItem("Theme")}
-              onMouseLeave={() => setHoveredNavItem(null)}
-            >
-              <ModeToggle />
-            </div>
-          </div>
+          <ModeToggle />
         </div>
         {showAlert && (
           <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-96">
@@ -339,13 +273,7 @@ function App() {
         <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 ">
 
           <div className="main max-w-2xl w-full flex flex-col gap-10">
-            <motion.div 
-              className="hero flex flex-row sm:flex-row gap-4 sm:text-left"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="hero flex flex-row sm:flex-row gap-4 sm:text-left">
               <div className="title">
                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter whitespace-normal break-words">
                   Hello! I'm Ansh 👋
@@ -363,33 +291,21 @@ function App() {
                   className="rounded-full aspect-square w-full object-cover"
                 />
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="About"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="About">
               <h1 className="font-bold text-[1.2rem]">About</h1>
               <p className="text-stone-600 dark:text-stone-400 text-[1rem]">
-                I'm currently pursuing my B.Tech in Artificial Intelligence and
+                I’m currently pursuing my B.Tech in Artificial Intelligence and
                 Machine Learning at CHARUSAT University. I specialize in
                 frontend development, UI/UX design, and integrating AI into web
-                applications. I've participated in multiple hackathons, built
+                applications. I’ve participated in multiple hackathons, built
                 real-world SaaS projects, and collaborated with teams to create
                 solutions that are both functional and visually appealing.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="work experience"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="work experience">
               <h1 className="font-bold text-[1.2rem]">Work Experience</h1>
               <div className="flex flex-col gap-5 pt-3">
                 {isLoading
@@ -417,15 +333,8 @@ function App() {
                       />
                     ))}
               </div>
-            </motion.div>
-
-            <motion.div 
-              className="Education"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            </div>
+            <div className="Education">
               <h1 className="font-bold text-[1.2rem]">Education</h1>
               <div className="flex flex-col pt-3 gap-5">
                 {isLoading
@@ -453,15 +362,9 @@ function App() {
                       />
                     ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="Skills"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="Skills">
               <h1 className="font-bold text-[1.2rem] pb-5">Skills</h1>
               <div className="flex w-full gap-1 flex-wrap">
                 {isLoading
@@ -485,15 +388,9 @@ function App() {
                       </Badge>
                     ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="Projects pt-14"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="Projects pt-14">
               <div className="flex-col text-center justify-center pb-10">
                 <Button>My Projects</Button>
                 <h1 className="text-5xl font-bold pt-1">
@@ -501,7 +398,7 @@ function App() {
                 </h1>
                 <p className="pt-2 text-2xl text-stone-600 dark:text-stone-400 tracking-tight">
                   From AI-powered applications to modern UI projects, here are
-                  some of the works I've built recently.
+                  some of the works I’ve built recently.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -538,15 +435,9 @@ function App() {
                       <ProjectCard key={project.id} project={project} />
                     ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="History pt-14"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="History pt-14">
               <div className="flex-col text-center justify-center pb-10">
                 <Button>History</Button>
                 <h1 className="text-5xl font-bold pt-1">
@@ -598,15 +489,9 @@ function App() {
                       />
                     ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              className="Contact pt-14 pb-14"
-              initial={{ y: 50, filter: "blur(10px)" }}
-              whileInView={{ y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
+            <div className="Contact pt-14 pb-14">
               <div className="flex-col text-center justify-center pb-10">
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger onClick={() => setIsChevronAnimating(false)}>
@@ -702,10 +587,10 @@ function App() {
                 <h1 className="text-5xl font-bold pt-1">Get in Touch</h1>
                 <p className="pt-2 text-2xl text-stone-600 dark:text-stone-400 tracking-tight">
                   Want to collaborate or discuss a project? Reach out via
-                  Twitter DM or GitHub, and I'll respond as soon as I can.
+                  Twitter DM or GitHub, and I’ll respond as soon as I can.
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </ThemeProvider>
