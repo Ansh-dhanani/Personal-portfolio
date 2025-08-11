@@ -13,7 +13,7 @@ A modern, responsive portfolio website built with React, featuring smooth animat
 ![Light Mode Screenshot](public/lightview.png)
 
 ### 📱 Mobile View
-![Mobile Screenshot](public/mobileview.png)
+![Mobile Screenshot](public/mobile.png)
 
 </div>
 
