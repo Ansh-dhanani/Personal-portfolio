@@ -10,10 +10,10 @@ A modern, responsive portfolio website built with React, featuring smooth animat
 ![Dark Mode Screenshot](public/darkview.png)
 
 ### ☀️ Light Mode
-![Light Mode Screenshot](screenshots/light-mode.png)
+![Light Mode Screenshot](public/lightview.png)
 
 ### 📱 Mobile View
-![Mobile Screenshot](screenshots/mobile-view.png)
+![Mobile Screenshot](public/mobileview.png)
 
 </div>
 
