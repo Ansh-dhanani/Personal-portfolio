@@ -1,15 +1,69 @@
 import { useState, useEffect } from "react";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { ModeToggle } from "@/components/ui/Mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import "./App.css";
 import ProjectCard from "./components/ui/ProjectCard";
 import History from "./components/ui/History";
-import ExperienceUI from "@/components/ui/experienceUI";
+import ExperienceUI from "@/components/ui/ExperienceUI";
 import GradualBlurEffect from "./components/ui/Gradualblur";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle, XCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function App() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState("success");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.target);
+    formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setAlertType("success");
+        setAlertMessage("Message sent successfully!");
+        setDialogOpen(false);
+        setShowAlert(true);
+        e.target.reset();
+        setTimeout(() => setShowAlert(false), 3000);
+      } else {
+        setAlertType("error");
+        setAlertMessage("Failed to send message. Please try again.");
+        setDialogOpen(false);
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+      }
+    } catch (error) {
+      setAlertType("error");
+      setAlertMessage(`Error: ${error.message}`);
+      setDialogOpen(false);
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   useEffect(() => {
     const initLenis = async () => {
       try {
@@ -39,7 +93,7 @@ function App() {
       startDate: "2023",
       endDate: "Present",
       description:
-        "Designing and developing modern, responsive, and interactive websites using React, Vite, Tailwind CSS, and Shadcn UI. Experienced in building scalable UI components and integrating APIs for real-world applications."
+        "Designing and developing modern, responsive, and interactive websites using React, Vite, Tailwind CSS, and Shadcn UI. Experienced in building scalable UI components and integrating APIs for real-world applications.",
     },
     {
       companyName: "Hackathon Projects",
@@ -48,7 +102,7 @@ function App() {
       startDate: "2023",
       endDate: "Present",
       description:
-        "Built AI-powered and data-driven projects for hackathons, including web apps using Flask, TensorFlow.js, and React, focusing on problem-solving and user experience."
+        "Built AI-powered and data-driven projects for hackathons, including web apps using Flask, TensorFlow.js, and React, focusing on problem-solving and user experience.",
     },
   ]);
 
@@ -60,7 +114,7 @@ function App() {
       startDate: "2023",
       endDate: "2027 (Expected)",
       description:
-        "Pursuing a strong foundation in AI, ML, and software engineering. Actively engaged in hackathons, research, and building portfolio projects to bridge the gap between academic knowledge and industry applications."
+        "Pursuing a strong foundation in AI, ML, and software engineering. Actively engaged in hackathons, research, and building portfolio projects to bridge the gap between academic knowledge and industry applications.",
     },
     {
       companyName: "Higher Secondary Education",
@@ -69,7 +123,7 @@ function App() {
       startDate: "2021",
       endDate: "2023",
       description:
-        "Focused on Physics, Chemistry, Mathematics, and Computer Science, building problem-solving skills and logical thinking essential for programming and AI."
+        "Focused on Physics, Chemistry, Mathematics, and Computer Science, building problem-solving skills and logical thinking essential for programming and AI.",
     },
   ]);
 
@@ -85,7 +139,7 @@ function App() {
     { tech: "Flask" },
     { tech: "C++" },
     { tech: "Git & GitHub" },
-    { tech: "Figma" }
+    { tech: "Figma" },
   ]);
 
   const [projectsData] = useState([
@@ -139,7 +193,7 @@ function App() {
       place: "London, Ontario",
       info: "Built an AR-based bedtime storytelling app for kids, integrating interactive animations and voice features for immersive learning.",
       githubUrl: "https://github.com/username/hackwestern-project",
-      siteUrl: "https://hackwestern-demo.com"
+      siteUrl: "https://hackwestern-demo.com",
     },
     {
       id: 2,
@@ -148,7 +202,7 @@ function App() {
       title: "Tech Conference Speaker",
       place: "San Francisco, CA",
       info: "Delivered a talk on the future of AI-powered frontend development, sharing insights on integrating ML models with web applications.",
-      siteUrl: "https://techconf2024.com"
+      siteUrl: "https://techconf2024.com",
     },
     {
       id: 3,
@@ -157,14 +211,28 @@ function App() {
       title: "Open Source Contribution",
       place: "Remote",
       info: "Contributed reusable UI components and performance optimizations to a React library with 10k+ GitHub stars.",
-      githubUrl: "https://github.com/username/react-components"
-    }
+      githubUrl: "https://github.com/username/react-components",
+    },
   ]);
 
   return (
     <>
       <GradualBlurEffect />
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        {showAlert && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-96">
+            <Alert
+              variant={alertType === "success" ? "default" : "destructive"}
+              className={alertType === "success" ? "border-green-400 bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200 dark:border-green-400" : "border-red-500 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-400 dark:border-red-800"}
+            >
+              {alertType === "success" ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
+              <AlertTitle>
+                {alertType === "success" ? "Success!" : "Error!"}
+              </AlertTitle>
+              <AlertDescription>{alertMessage}</AlertDescription>
+            </Alert>
+          </div>
+        )}
         <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 ">
           <div className="fixed left-20 top-10">
             <ModeToggle />
@@ -176,7 +244,9 @@ function App() {
                   Hello! I'm Ansh 👋
                 </h1>
                 <p className="text-[1.2rem] tracking-tighter sm:tracking-normal text-stone-600 dark:text-stone-400">
-                  A passionate frontend developer and AI enthusiast, blending design with technology to create impactful, user-focused digital experiences.
+                  A passionate frontend developer and AI enthusiast, blending
+                  design with technology to create impactful, user-focused
+                  digital experiences.
                 </p>
               </div>
               <div className="min-w-20 max-w-[100px] max-[458px]:hidden sm:max-w-[300px] ">
@@ -191,8 +261,12 @@ function App() {
             <div className="About">
               <h1 className="font-bold text-[1.2rem]">About</h1>
               <p className="text-stone-600 dark:text-stone-400 text-[1rem]">
-                I’m currently pursuing my B.Tech in Artificial Intelligence and Machine Learning at CHARUSAT University. I specialize in frontend development, UI/UX design, and integrating AI into web applications.  
-                I’ve participated in multiple hackathons, built real-world SaaS projects, and collaborated with teams to create solutions that are both functional and visually appealing.
+                I’m currently pursuing my B.Tech in Artificial Intelligence and
+                Machine Learning at CHARUSAT University. I specialize in
+                frontend development, UI/UX design, and integrating AI into web
+                applications. I’ve participated in multiple hackathons, built
+                real-world SaaS projects, and collaborated with teams to create
+                solutions that are both functional and visually appealing.
               </p>
             </div>
 
@@ -254,7 +328,8 @@ function App() {
                   Check out my latest work
                 </h1>
                 <p className="pt-2 text-2xl text-stone-600 dark:text-stone-400 tracking-tight">
-                  From AI-powered applications to modern UI projects, here are some of the works I’ve built recently.
+                  From AI-powered applications to modern UI projects, here are
+                  some of the works I’ve built recently.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -271,7 +346,9 @@ function App() {
                   I like building things
                 </h1>
                 <p className="pt-2 text-1xl text-stone-600 dark:text-stone-400 tracking-tight">
-                  I actively participate in hackathons and collaborative tech events, creating innovative projects in just 2–3 days with passionate teams.
+                  I actively participate in hackathons and collaborative tech
+                  events, creating innovative projects in just 2–3 days with
+                  passionate teams.
                 </p>
               </div>
               <div>
@@ -292,16 +369,97 @@ function App() {
 
             <div className="Contact pt-14 pb-14">
               <div className="flex-col text-center justify-center pb-10">
-                <Button>Contact</Button>
-                <h1 className="text-5xl font-bold pt-1">
-                  Get in Touch
-                </h1>
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                  <DialogTrigger>
+                    <Button>Contact</Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Get in Touch</DialogTitle>
+                      <DialogDescription>
+                        Send me a message and I'll get back to you as soon as
+                        possible.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleContactSubmit} className="space-y-4">
+                      <div className="space-y-2">
+                        <label htmlFor="name" className="text-sm font-medium">
+                          Name
+                        </label>
+                        <input
+                          id="name"
+                          name="name"
+                          type="text"
+                          placeholder="Your name"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="email" className="text-sm font-medium">
+                          Email
+                        </label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="your.email@example.com"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label
+                          htmlFor="subject"
+                          className="text-sm font-medium"
+                        >
+                          Subject
+                        </label>
+                        <input
+                          id="subject"
+                          name="subject"
+                          type="text"
+                          placeholder="What's this about?"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label
+                          htmlFor="message"
+                          className="text-sm font-medium"
+                        >
+                          Message
+                        </label>
+                        <textarea
+                          id="message"
+                          name="message"
+                          rows={4}
+                          placeholder="Tell me about your project or idea..."
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                          required
+                        />
+                      </div>
+                      <div className="flex justify-end space-x-2 pt-4">
+                        <DialogClose asChild>
+                          <Button type="button" variant="outline">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+                        <Button type="submit" disabled={isSubmitting}>
+                          {isSubmitting ? "Sending..." : "Send Message"}
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+                <h1 className="text-5xl font-bold pt-1">Get in Touch</h1>
                 <p className="pt-2 text-2xl text-stone-600 dark:text-stone-400 tracking-tight">
-                  Want to collaborate or discuss a project? Reach out via Twitter DM or GitHub, and I’ll respond as soon as I can.
+                  Want to collaborate or discuss a project? Reach out via
+                  Twitter DM or GitHub, and I’ll respond as soon as I can.
                 </p>
               </div>
             </div>
-
           </div>
         </div>
       </ThemeProvider>
