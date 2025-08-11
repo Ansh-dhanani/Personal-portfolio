@@ -3,13 +3,14 @@ import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { ModeToggle } from "@/components/ui/Mode-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import "./App.css";
 import ProjectCard from "./components/ui/ProjectCard";
 import History from "./components/ui/History";
 import ExperienceUI from "@/components/ui/ExperienceUI";
 import GradualBlurEffect from "./components/ui/Gradualblur";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, Github, Twitter, Linkedin, Mail } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -19,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ChevronDown } from "lucide-react";
 
 function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,6 +28,8 @@ function App() {
   const [alertType, setAlertType] = useState("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isChevronAnimating, setIsChevronAnimating] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -83,13 +87,14 @@ function App() {
     };
 
     initLenis();
+    setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
   const [experiences] = useState([
     {
       companyName: "Freelance / Personal Projects",
       position: "Frontend Developer & Designer",
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=1",
       startDate: "2023",
       endDate: "Present",
       description:
@@ -98,7 +103,7 @@ function App() {
     {
       companyName: "Hackathon Projects",
       position: "Full Stack Developer",
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=2",
       startDate: "2023",
       endDate: "Present",
       description:
@@ -110,7 +115,7 @@ function App() {
     {
       companyName: "Charotar University of Science and Technology",
       position: "B.Tech in Artificial Intelligence and Machine Learning",
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=3",
       startDate: "2023",
       endDate: "2027 (Expected)",
       description:
@@ -119,7 +124,7 @@ function App() {
     {
       companyName: "Higher Secondary Education",
       position: "Science (PCM + Computer Science)",
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=4",
       startDate: "2021",
       endDate: "2023",
       description:
@@ -187,7 +192,7 @@ function App() {
   const [historyData] = useState([
     {
       id: 1,
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=5",
       date: "12-July-2024",
       title: "Hack Western",
       place: "London, Ontario",
@@ -197,7 +202,7 @@ function App() {
     },
     {
       id: 2,
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=6",
       date: "15-March-2024",
       title: "Tech Conference Speaker",
       place: "San Francisco, CA",
@@ -206,7 +211,7 @@ function App() {
     },
     {
       id: 3,
-      logo: "/Ansh.jpg",
+      logo: "https://picsum.photos/150/150?random=7",
       date: "08-November-2023",
       title: "Open Source Contribution",
       place: "Remote",
@@ -219,13 +224,45 @@ function App() {
     <>
       <GradualBlurEffect />
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[100000] bg-background/80 backdrop-blur-sm border rounded-full px-4 py-2 flex items-center gap-3">
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <Github className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <Twitter className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+              <Linkedin className="h-4 w-4" />
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <a href="mailto:contact@example.com">
+              <Mail className="h-4 w-4" />
+            </a>
+          </Button>
+          <div className="w-px h-6 bg-foreground/20 mx-1"></div>
+          <ModeToggle />
+        </div>
         {showAlert && (
           <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-96">
             <Alert
               variant={alertType === "success" ? "default" : "destructive"}
-              className={alertType === "success" ? "border-green-400 bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200 dark:border-green-400" : "border-red-500 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-400 dark:border-red-800"}
+              className={
+                alertType === "success"
+                  ? "border-green-400 bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200 dark:border-green-400"
+                  : "border-red-500 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-400 dark:border-red-800"
+              }
             >
-              {alertType === "success" ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
+              {alertType === "success" ? (
+                <CheckCircle className="h-4 w-4" />
+              ) : (
+                <XCircle className="h-4 w-4" />
+              )}
               <AlertTitle>
                 {alertType === "success" ? "Success!" : "Error!"}
               </AlertTitle>
@@ -234,9 +271,7 @@ function App() {
           </div>
         )}
         <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 ">
-          <div className="fixed left-20 top-10">
-            <ModeToggle />
-          </div>
+
           <div className="main max-w-2xl w-full flex flex-col gap-10">
             <div className="hero flex flex-row sm:flex-row gap-4 sm:text-left">
               <div className="title">
@@ -249,7 +284,7 @@ function App() {
                   digital experiences.
                 </p>
               </div>
-              <div className="min-w-20 max-w-[100px] max-[458px]:hidden sm:max-w-[300px] ">
+              <div className="relative min-w-20 max-w-[100px] max-[458px]:hidden sm:max-w-[300px] ">
                 <img
                   src="/Ansh.jpg"
                   alt="Profile picture of Ansh"
@@ -273,51 +308,85 @@ function App() {
             <div className="work experience">
               <h1 className="font-bold text-[1.2rem]">Work Experience</h1>
               <div className="flex flex-col gap-5 pt-3">
-                {experiences.map((exp, index) => (
-                  <ExperienceUI
-                    key={index}
-                    companyName={exp.companyName}
-                    position={exp.position}
-                    logo={exp.logo}
-                    startDate={exp.startDate}
-                    endDate={exp.endDate}
-                    description={exp.description}
-                  />
-                ))}
+                {isLoading
+                  ? Array(2)
+                      .fill(0)
+                      .map((_, index) => (
+                        <div key={index} className="flex items-start gap-4">
+                          <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+                          <div className="flex-1 space-y-1">
+                            <Skeleton className="h-[17px] w-[280px]" />
+                            <Skeleton className="h-[13px] w-[200px]" />
+                            <Skeleton className="h-3 w-[120px]" />
+                          </div>
+                        </div>
+                      ))
+                  : experiences.map((exp, index) => (
+                      <ExperienceUI
+                        key={index}
+                        companyName={exp.companyName}
+                        position={exp.position}
+                        logo={exp.logo}
+                        startDate={exp.startDate}
+                        endDate={exp.endDate}
+                        description={exp.description}
+                      />
+                    ))}
               </div>
             </div>
-
             <div className="Education">
               <h1 className="font-bold text-[1.2rem]">Education</h1>
               <div className="flex flex-col pt-3 gap-5">
-                {educations.map((exp, index) => (
-                  <ExperienceUI
-                    key={index}
-                    companyName={exp.companyName}
-                    position={exp.position}
-                    logo={exp.logo}
-                    startDate={exp.startDate}
-                    endDate={exp.endDate}
-                    description={exp.description}
-                  />
-                ))}
+                {isLoading
+                  ? Array(2)
+                      .fill(0)
+                      .map((_, index) => (
+                        <div key={index} className="flex items-start gap-4">
+                          <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+                          <div className="flex-1 space-y-1">
+                            <Skeleton className="h-[17px] w-[320px]" />
+                            <Skeleton className="h-[13px] w-[240px]" />
+                            <Skeleton className="h-3 w-[140px]" />
+                          </div>
+                        </div>
+                      ))
+                  : educations.map((exp, index) => (
+                      <ExperienceUI
+                        key={index}
+                        companyName={exp.companyName}
+                        position={exp.position}
+                        logo={exp.logo}
+                        startDate={exp.startDate}
+                        endDate={exp.endDate}
+                        description={exp.description}
+                      />
+                    ))}
               </div>
             </div>
 
             <div className="Skills">
               <h1 className="font-bold text-[1.2rem] pb-5">Skills</h1>
               <div className="flex w-full gap-1 flex-wrap">
-                {Skills.map((data, index) => (
-                  <Badge
-                    key={index}
-                    size="sm"
-                    shape="pill"
-                    interactive={true}
-                    className="cursor-pointer"
-                  >
-                    {data.tech}
-                  </Badge>
-                ))}
+                {isLoading
+                  ? Array(12)
+                      .fill(0)
+                      .map((_, index) => (
+                        <Skeleton
+                          key={index}
+                          className="h-[22px] w-[60px] rounded-full"
+                        />
+                      ))
+                  : Skills.map((data, index) => (
+                      <Badge
+                        key={index}
+                        size="sm"
+                        shape="pill"
+                        interactive={true}
+                        className="cursor-pointer"
+                      >
+                        {data.tech}
+                      </Badge>
+                    ))}
               </div>
             </div>
 
@@ -333,9 +402,38 @@ function App() {
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {projectsData.map((project) => (
-                  <ProjectCard key={project.id} project={project} />
-                ))}
+                {isLoading
+                  ? Array(3)
+                      .fill(0)
+                      .map((_, index) => (
+                        <div
+                          key={index}
+                          className="rounded-2xl overflow-hidden w-full h-full flex flex-col border-2"
+                        >
+                          <Skeleton className="h-[180px] w-full" />
+                          <div className="p-[7px] flex flex-col space-y-2">
+                            <Skeleton className="h-[18px] w-[200px]" />
+                            <Skeleton className="h-[14px] w-[100px]" />
+                            <div className="space-y-1">
+                              <Skeleton className="h-3 w-full" />
+                              <Skeleton className="h-3 w-[90%]" />
+                              <Skeleton className="h-3 w-[80%]" />
+                            </div>
+                            <div className="flex gap-1 pt-2">
+                              <Skeleton className="h-[18px] w-[50px] rounded" />
+                              <Skeleton className="h-[18px] w-[60px] rounded" />
+                              <Skeleton className="h-[18px] w-[55px] rounded" />
+                            </div>
+                            <div className="flex gap-1 pt-1">
+                              <Skeleton className="h-[24px] w-[70px] rounded" />
+                              <Skeleton className="h-[24px] w-[60px] rounded" />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  : projectsData.map((project) => (
+                      <ProjectCard key={project.id} project={project} />
+                    ))}
               </div>
             </div>
 
@@ -352,26 +450,59 @@ function App() {
                 </p>
               </div>
               <div>
-                {historyData.map((item) => (
-                  <History
-                    key={item.id}
-                    logo={item.logo}
-                    date={item.date}
-                    title={item.title}
-                    place={item.place}
-                    info={item.info}
-                    githubUrl={item.githubUrl}
-                    siteUrl={item.siteUrl}
-                  />
-                ))}
+                {isLoading
+                  ? Array(3)
+                      .fill(0)
+                      .map((_, index) => (
+                        <div
+                          key={index}
+                          className="relative flex flex-row gap-4 ml-14 p-2 pl-5 pt-4 border-l-2"
+                        >
+                          <div className="absolute -left-6 top-2 flex items-center w-12 h-12">
+                            <Skeleton className="w-full h-full rounded-full" />
+                          </div>
+                          <div className="flex-grow ml-5 space-y-2">
+                            <Skeleton className="h-[14px] w-[100px]" />
+                            <Skeleton className="h-[15px] w-[180px]" />
+                            <Skeleton className="h-[14px] w-[120px]" />
+                            <div className="space-y-1 pt-1">
+                              <Skeleton className="h-[14px] w-full" />
+                              <Skeleton className="h-[14px] w-[85%]" />
+                            </div>
+                            <div className="flex gap-2 pt-2">
+                              <Skeleton className="h-[24px] w-[60px] rounded" />
+                              <Skeleton className="h-[24px] w-[50px] rounded" />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                  : historyData.map((item) => (
+                      <History
+                        key={item.id}
+                        logo={item.logo}
+                        date={item.date}
+                        title={item.title}
+                        place={item.place}
+                        info={item.info}
+                        githubUrl={item.githubUrl}
+                        siteUrl={item.siteUrl}
+                      />
+                    ))}
               </div>
             </div>
 
             <div className="Contact pt-14 pb-14">
               <div className="flex-col text-center justify-center pb-10">
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                  <DialogTrigger>
-                    <Button>Contact</Button>
+                  <DialogTrigger onClick={() => setIsChevronAnimating(false)}>
+                    <div className="flex flex-col items-center gap-2">
+                      {isChevronAnimating && (
+                        <div className="animate-bounce">
+                          <ChevronDown className="h-6 w-6" />
+                        </div>
+                      )}
+                      <Button>Contact</Button>
+                    </div>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
