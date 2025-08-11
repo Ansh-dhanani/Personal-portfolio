@@ -4,14 +4,18 @@ A modern, responsive portfolio website built with React, featuring smooth animat
 
 ## 📸 Screenshots
 
+<div align="center">
+
 ### 🌙 Dark Mode
-![Dark Mode Screenshot](./screenshots/dark-mode.png)
+![Dark Mode Screenshot](screenshots/dark-mode.png)
 
 ### ☀️ Light Mode
-![Light Mode Screenshot](./screenshots/light-mode.png)
+![Light Mode Screenshot](screenshots/light-mode.png)
 
 ### 📱 Mobile View
-![Mobile Screenshot](./screenshots/mobile-view.png)
+![Mobile Screenshot](screenshots/mobile-view.png)
+
+</div>
 
 ## ✨ Features
 
