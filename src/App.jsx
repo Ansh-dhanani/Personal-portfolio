@@ -75,25 +75,28 @@ function App() {
   };
   useEffect(() => {
     const initLenis = async () => {
-      try {
-        const Lenis = (await import("lenis")).default;
-        const lenis = new Lenis();
+      if (window.innerWidth >= 768) {
+        try {
+          const Lenis = (await import("lenis")).default;
+          const lenis = new Lenis();
 
-        function raf(time) {
-          lenis.raf(time);
+          function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+          }
           requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
 
-        return () => lenis.destroy();
-      } catch (error) {
-        console.log("Lenis not available");
+          return () => lenis.destroy();
+        } catch (error) {
+          console.log("Lenis not available");
+        }
       }
     };
 
     initLenis();
     setTimeout(() => setShowContent(true), 0);
-    setTimeout(() => setIsLoading(false), 2000);
+    const loadingTime = window.innerWidth >= 768 ? 2000 : 500;
+    setTimeout(() => setIsLoading(false), loadingTime);
   }, []);
 
  const [experiences] = useState([
@@ -365,18 +368,20 @@ const [historyData] = useState([
           </DialogContent>
         </Dialog>
         <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 relative">
-          <motion.div
-            className="absolute inset-0 z-10 pointer-events-none"
-            initial={{ 
-              background: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%)",
-              backdropFilter: "blur(10px)"
-            }}
-            animate={showContent ? { 
-              background: "linear-gradient(to bottom, rgba(0,0,0,0) -100%, rgba(0,0,0,0) 0%)",
-              backdropFilter: "blur(0px)"
-            } : {}}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
+          {window.innerWidth >= 768 && (
+            <motion.div
+              className="absolute inset-0 z-10 pointer-events-none"
+              initial={{ 
+                background: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%)",
+                backdropFilter: "blur(10px)"
+              }}
+              animate={showContent ? { 
+                background: "linear-gradient(to bottom, rgba(0,0,0,0) -100%, rgba(0,0,0,0) 0%)",
+                backdropFilter: "blur(0px)"
+              } : {}}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            />
+          )}
           <div className="main max-w-2xl w-full flex flex-col gap-10">
             <div className="hero flex flex-row sm:flex-row gap-4 sm:text-left">
               <div className="title">
