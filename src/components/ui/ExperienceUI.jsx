@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ChevronRight } from "lucide-react";
+import { Skeleton } from "./skeleton";
 const ExperienceUI = ({
   companyName,
   position,
@@ -24,14 +25,7 @@ const ExperienceUI = ({
     >
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0">
-          <img
-            src={logo}
-            alt={`${companyName} logo`}
-            className="w-12 h-12 rounded-full object-cover transition-transform duration-300 hover:scale-110"
-            onError={(e) => {
-              e.target.src = "https://via.placeholder.com/48x48?text=Logo";
-            }}
-          />
+          <LogoWithSkeleton logo={logo} companyName={companyName} />
         </div>
 
         <div className="flex-1">
@@ -68,6 +62,30 @@ const ExperienceUI = ({
         </div>
       </div>
     </div>
+  );
+};
+
+const LogoWithSkeleton = ({ logo, companyName }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  return (
+    <>
+      {isLoading && <Skeleton className="w-12 h-12 rounded-full" />}
+      <img
+        src={logo}
+        alt={`${companyName} logo`}
+        className={`w-12 h-12 rounded-full object-cover transition-transform duration-300 hover:scale-110 ${
+          isLoading ? "hidden" : "block"
+        }`}
+        onLoad={() => setIsLoading(false)}
+        onError={(e) => {
+          setIsLoading(false);
+          setHasError(true);
+          e.target.src = "https://via.placeholder.com/48x48?text=Logo";
+        }}
+      />
+    </>
   );
 };
 
