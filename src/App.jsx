@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { ModeToggle } from "@/components/ui/Mode-toggle";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,7 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isChevronAnimating, setIsChevronAnimating] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +92,8 @@ function App() {
     };
 
     initLenis();
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => setShowContent(true), 0);
+    setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
  const [experiences] = useState([
@@ -361,8 +364,19 @@ const [historyData] = useState([
             )}
           </DialogContent>
         </Dialog>
-        <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 ">
-
+        <div className="bg-background flex flex-col items-center justify-center p-5 pt-10 md:pt-20 relative">
+          <motion.div
+            className="absolute inset-0 z-10 pointer-events-none"
+            initial={{ 
+              background: "linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 100%)",
+              backdropFilter: "blur(10px)"
+            }}
+            animate={showContent ? { 
+              background: "linear-gradient(to bottom, rgba(0,0,0,0) -100%, rgba(0,0,0,0) 0%)",
+              backdropFilter: "blur(0px)"
+            } : {}}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          />
           <div className="main max-w-2xl w-full flex flex-col gap-10">
             <div className="hero flex flex-row sm:flex-row gap-4 sm:text-left">
               <div className="title">
