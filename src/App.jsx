@@ -179,7 +179,7 @@ const [projectsData] = useState([
     title: "React Template (WIP)",
     description:
       "A collection of modern React templates powered by Vite. Includes free premium fonts, templates, and reusable components to kickstart frontend projects quickly.",
-    video: "",
+    video: "/public/v1.mp4",
     date: "2024-04-15",
     badges: ["React", "Vite", "UI/UX"],
     liveUrl: "", // Add live link when ready
