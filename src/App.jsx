@@ -99,7 +99,7 @@ function App() {
     setTimeout(() => setIsLoading(false), loadingTime);
   }, []);
 
- const [experiences] = useState([
+const [experiences] = useState([
   {
     companyName: "Freelance / Personal Projects",
     position: "Frontend Developer & Designer",
@@ -150,77 +150,98 @@ const [Skills] = useState([
 const [projectsData] = useState([
   {
     id: 1,
-    title: "E-Commerce Platform",
+    title: "Scanix AI - Brain Tumor Detection",
     description:
-      "A full-stack, responsive e-commerce platform featuring authentication, cart management, secure Stripe payments, and an admin dashboard for managing products and orders. Built with React, Node.js, and MongoDB for speed, scalability, and modern UI/UX.",
-    video: "/v1.mp4",
-    date: "2024-01-15",
-    badges: ["React", "Node.js", "MongoDB", "Stripe"],
-    liveUrl: "https://example-ecommerce.com",
-    githubUrl: "https://github.com/Ansh-dhanani",
-    liveText: "Website",
+      "An AI-powered healthcare tool for brain tumor detection. Built in React, this web app leverages advanced ML models to analyze medical images and provide fast, accurate predictions. Awarded in Tech-Tonic Hackathon.",
+    video: "", // Add if you have a demo video
+    date: "2024-07-01",
+    badges: ["React", "AI/ML", "Netlify", "Healthcare"],
+    liveUrl: "https://scanix-ai.netlify.app",
+    githubUrl: "https://github.com/Ansh-dhanani/Scanix_AI",
+    liveText: "Live Demo",
     githubText: "GitHub",
   },
   {
     id: 2,
-    title: "Task Management App",
+    title: "CheckWise - AI-Powered CBC Analysis",
     description:
-      "A real-time collaborative task manager with drag-and-drop features, Firebase backend, live updates, and socket-based notifications. Supports role-based permissions and responsive design for team productivity.",
-    video: "/v1.mp4",
-    date: "2024-02-20",
-    badges: ["React", "Firebase", "Tailwind", "Socket.io"],
-    liveUrl: "https://task-manager-demo.com",
-    githubUrl: "https://github.com/Ansh-dhanani",
-    liveText: "Website",
+      "Automated CBC report diagnosis using state-of-the-art AI. The app analyzes blood test reports and suggests possible diseases, streamlining medical workflows. Built for the Oodo Hackathon.",
+    video: "",
+    date: "2024-03-15",
+    badges: ["React", "AI/ML", "Netlify", "Healthcare"],
+    liveUrl: "https://check-wise.netlify.app/",
+    githubUrl: "https://github.com/Ansh-dhanani/CheckwiseAI",
+    liveText: "Live Demo",
     githubText: "GitHub",
   },
   {
     id: 3,
-    title: "Weather Dashboard",
+    title: "React Template (WIP)",
     description:
-      "A dynamic weather dashboard using Weather API and Chart.js to display real-time forecasts, temperature trends, and location-based updates. Includes animated components and responsive charts for a smooth user experience.",
-    video: "/v1.mp4",
-    date: "2024-03-10",
-    badges: ["React", "Weather API", "Chart.js", "CSS3"],
-    liveUrl: "https://weather-dashboard-demo.com",
-    githubUrl: "https://github.com/Ansh-dhanani",
-    liveText: "Website",
+      "A collection of modern React templates powered by Vite. Includes free premium fonts, templates, and reusable components to kickstart frontend projects quickly.",
+    video: "",
+    date: "2024-04-15",
+    badges: ["React", "Vite", "UI/UX"],
+    liveUrl: "", // Add live link when ready
+    githubUrl: "https://github.com/Ansh-dhanani/react_template",
+    liveText: "",
     githubText: "GitHub",
+  },
+  {
+    id: 4,
+    title: "Stock",
+    description:
+      "A dynamic React app for tracking, visualizing, and managing stocks. Features elegant charts and real-time data updates for a seamless stock-tracking experience.",
+    video: "",
+    date: "2024-05-10",
+    badges: ["React", "Chart.js", "Finance"],
+    liveUrl: "https://stockpredicti0n.netlify.app/",
+    githubUrl: "", // Add GitHub link if available
+    liveText: "Live",
+    githubText: "",
   },
 ]);
 
 const [historyData] = useState([
   {
     id: 1,
-    logo: "https://picsum.photos/150/150?random=5",
+    logo: "https://picsum.photos/150/150?random=8",
     date: "12-July-2024",
-    title: "Hack Western",
-    place: "London, Ontario",
-    info: "Developed an AR-based bedtime storytelling app for children, featuring interactive animations, voice integration, and personalized content generation for immersive learning.",
-    githubUrl: "https://github.com/Ansh-dhanani",
-    siteUrl: "https://hackwestern-demo.com",
+    title: "Tech-Tonic Hackathon — Scanix AI",
+    place: "Remote / Online",
+    info: "Built Scanix AI, an AI-powered brain tumor detection tool. Awarded for innovation in healthcare tech.",
+    githubUrl: "https://github.com/Ansh-dhanani/Scanix_AI",
+    siteUrl: "https://scanix-ai.netlify.app",
   },
   {
     id: 2,
-    logo: "https://picsum.photos/150/150?random=6",
+    logo: "https://picsum.photos/150/150?random=9",
     date: "15-March-2024",
-    title: "Tech Conference Speaker",
-    place: "San Francisco, CA",
-    info: "Delivered a keynote on AI-powered frontend development, showcasing how ML models can be seamlessly integrated into modern web applications for smarter user experiences.",
-    siteUrl: "https://techconf2024.com",
+    title: "Oodo Hackathon — CheckWise AI",
+    place: "Remote / Online",
+    info: "Developed CheckWise AI, an automated CBC report diagnosis system using modern AI/ML models.",
+    githubUrl: "https://github.com/Ansh-dhanani/CheckwiseAI",
+    siteUrl: "https://check-wise.netlify.app/",
   },
   {
     id: 3,
     logo: "https://picsum.photos/150/150?random=7",
-    date: "08-November-2023",
-    title: "Open Source Contribution",
-    place: "Remote",
-    info: "Contributed reusable UI components and performance improvements to a React library with 10k+ GitHub stars, improving accessibility and developer experience.",
-    githubUrl: "https://github.com/Ansh-dhanani",
+    date: "April-2024",
+    title: "Open Source — React Template Library",
+    place: "GitHub",
+    info: "Published and maintained a React template library providing free premium templates and components.",
+    githubUrl: "https://github.com/Ansh-dhanani/react_template",
+  },
+  {
+    id: 4,
+    logo: "https://picsum.photos/150/150?random=12",
+    date: "May-2024",
+    title: "Stock Prediction App Launched",
+    place: "Personal Project",
+    info: "Designed and launched a modern React-based stock tracking and visualization app.",
+    siteUrl: "https://stockpredicti0n.netlify.app/",
   },
 ]);
-
-
 
   return (
     <>
