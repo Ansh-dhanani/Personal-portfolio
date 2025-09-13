@@ -15,7 +15,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['https://anshdhanani.netlify.app', 'http://localhost:3000', 'http://localhost:5173'],
+  origin: ['https://anshdhanani.netlify.app', 'http://localhost:3000', 'http://localhost:5173', 'https://the-perfect-portfolio-zp8b.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
