@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "./button";
 import { Github, ExternalLink } from "lucide-react";
 
-const History = ({ logo, date, title, place, info, githubUrl, siteUrl }) => {
+export const History = ({ logo, date, title, place, info, githubUrl, siteUrl }) => {
   return (
     <>
       <div className="relative flex flex-row gap-4 ml-14 p-2 pl-5 pt-4 border-l-2">

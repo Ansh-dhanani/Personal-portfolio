@@ -3,7 +3,7 @@ import { Badge } from "./badge";
 import { Button } from "./button";
 import React, { useState } from "react";
 
-const ProjectCard = ({ project }) => {
+export const ProjectCard = ({ project }) => {
   const { video, title, date, description, badges, liveUrl, githubUrl } = project || {};
   return (
     <div className="rounded-2xl overflow-hidden w-full h-full flex flex-col border-2 min-w-0">
@@ -68,7 +68,6 @@ const VideoWithPlaceholder = ({ video, title }) => {
         autoPlay={true} 
         muted 
         loop 
-        playbackRate={1.5}
         className="w-full h-auto object-cover"
         onError={() => setHasError(true)}
         onLoadedData={() => setIsLoading(false)}

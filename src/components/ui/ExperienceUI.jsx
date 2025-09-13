@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Skeleton } from "./skeleton";
-const ExperienceUI = ({
+export const ExperienceUI = ({
   companyName,
   position,
   logo,
