@@ -4,7 +4,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import Home from "./pages/Home";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/react"
 
 const PrivateRoute = ({ children }) => {
   const { token } = useAuth();
@@ -19,18 +19,18 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route 
-              path="/admin/dashboard" 
+            <Route
+              path="/admin/dashboard"
               element={
                 <PrivateRoute>
                   <AdminDashboard />
                 </PrivateRoute>
-              } 
+              }
             />
-             <Analytics />
           </Routes>
         </ThemeProvider>
       </Router>
+      <Analytics />
     </AuthProvider>
   );
 };
