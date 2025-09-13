@@ -7,10 +7,10 @@ I maked it using Shadcn UI.
 
 <div align="center">
 
-### 🌙 Dark Mode
+### Home page
 ![Dark Mode Screenshot](public/Home.png)
 
-### ☀️ Light Mode
+### Admin page
 ![Light Mode Screenshot](public/admin.png)
 
 ### 📱 Mobile View
