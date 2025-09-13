@@ -606,11 +606,7 @@ const Home = () => {
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-96">
           <Alert
             variant={alertType === "success" ? "default" : "destructive"}
-            className={
-              alertType === "success"
-                ? "border-green-400 bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200 dark:border-green-400"
-                : "border-red-500 bg-red-50 text-red-800 dark:bg-red-950 dark:text-red-400 dark:border-red-800"
-            }
+            className={alertType === "success" ? "border-green-500 bg-green-50 text-green-800 dark:bg-green-950 dark:text-green-200 dark:border-green-500" : ""}
           >
             {alertType === "success" ? (
               <CheckCircle className="h-4 w-4" />
