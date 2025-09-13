@@ -39,6 +39,12 @@ const AdminDashboard = () => {
   const handleEdit = async (id, type, updatedData) => {
     try {
       const token = localStorage.getItem('adminToken');
+      if (!token) {
+        alert('No authentication token found. Please login again.');
+        logout();
+        navigate('/admin/login');
+        return;
+      }
       const response = await fetch(`${API_BASE_URL}/api/admin/${type}/${id}`, {
         method: 'PUT',
         headers: {
@@ -51,9 +57,20 @@ const AdminDashboard = () => {
       if (response.ok) {
         // Refresh data immediately after successful update
         await fetchData(type);
+      } else {
+        const errorData = await response.json();
+        console.error('Edit failed:', response.status, response.statusText, errorData);
+        if (response.status === 400 && errorData.message === 'Invalid token') {
+          alert('Token expired. Please login again.');
+          logout();
+          navigate('/admin/login');
+        } else {
+          alert(`Failed to update item: ${errorData.message || 'Unknown error'}`);
+        }
       }
     } catch (error) {
       console.error('Error updating data:', error);
+      alert('Error updating item. Please check console for details.');
     }
   };
 
@@ -62,6 +79,12 @@ const AdminDashboard = () => {
 
     try {
       const token = localStorage.getItem('adminToken');
+      if (!token) {
+        alert('No authentication token found. Please login again.');
+        logout();
+        navigate('/admin/login');
+        return;
+      }
       const response = await fetch(`${API_BASE_URL}/api/admin/${type}/${id}`, {
         method: 'DELETE',
         headers: {
@@ -72,15 +95,32 @@ const AdminDashboard = () => {
       if (response.ok) {
         // Refresh data immediately after successful deletion
         await fetchData(type);
+      } else {
+        const errorData = await response.json();
+        console.error('Delete failed:', response.status, response.statusText, errorData);
+        if (response.status === 400 && errorData.message === 'Invalid token') {
+          alert('Token expired. Please login again.');
+          logout();
+          navigate('/admin/login');
+        } else {
+          alert('Failed to delete item. Please check console for details.');
+        }
       }
     } catch (error) {
       console.error('Error deleting data:', error);
+      alert('Error deleting item. Please check console for details.');
     }
   };
 
   const handleAdd = async (type, newData) => {
     try {
       const token = localStorage.getItem('adminToken');
+      if (!token) {
+        alert('No authentication token found. Please login again.');
+        logout();
+        navigate('/admin/login');
+        return;
+      }
       const response = await fetch(`${API_BASE_URL}/api/admin/${type}`, {
         method: 'POST',
         headers: {
@@ -92,18 +132,32 @@ const AdminDashboard = () => {
 
       if (response.ok) {
         fetchData(type);
+      } else {
+        const errorData = await response.json();
+        console.error('Add failed:', response.status, response.statusText, errorData);
+        if (response.status === 400 && errorData.message === 'Invalid token') {
+          alert('Token expired. Please login again.');
+          logout();
+          navigate('/admin/login');
+        } else {
+          alert(`Failed to add item: ${errorData.message || 'Unknown error'}`);
+        }
       }
     } catch (error) {
       console.error('Error adding data:', error);
+      alert('Error adding item. Please check console for details.');
     }
   };
 
   const onSubmit = async (formData) => {
     const updates = {};
+    const currentIds = data.map(item => item._id);
     Object.keys(formData).forEach(key => {
       const [id, field] = key.split('_', 2);
-      if (!updates[id]) updates[id] = {};
-      updates[id][field] = formData[key];
+      if (currentIds.includes(id)) {
+        if (!updates[id]) updates[id] = {};
+        updates[id][field] = formData[key];
+      }
     });
 
     for (const id in updates) {
@@ -140,8 +194,8 @@ const AdminDashboard = () => {
             <div className="space-y-4">
               <Button onClick={() => handleAdd('projects', {
                 title: 'New Project',
-                description: '',
-                video: '',
+                description: 'New project description',
+                video: 'https://example.com/video',
                 date: new Date().toISOString().split('T')[0],
                 badges: [],
                 liveUrl: '',
@@ -163,92 +217,92 @@ const AdminDashboard = () => {
                       <div className="space-y-4">
 
                         <FormItem>
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_title`}>Title</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_title`}
-                              render={({ field }) => <Input defaultValue={project.title} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_title`} defaultValue={project.title} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_description`}>Description</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_description`}
-                              render={({ field }) => <Input defaultValue={project.description} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_description`} defaultValue={project.description} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Video URL</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_video`}>Video URL</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_video`}
-                              render={({ field }) => <Input defaultValue={project.video} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_video`} defaultValue={project.video} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_date`}>Date</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_date`}
-                              render={({ field }) => <Input type="date" defaultValue={project.date?.split('T')[0]} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_date`} type="date" defaultValue={project.date?.split('T')[0]} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Badges (comma-separated)</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_badges`}>Badges (comma-separated)</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_badges`}
-                              render={({ field }) => <Input defaultValue={project.badges?.join(', ')} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_badges`} defaultValue={project.badges?.join(', ')} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Live URL</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_liveUrl`}>Live URL</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_liveUrl`}
-                              render={({ field }) => <Input defaultValue={project.liveUrl} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_liveUrl`} defaultValue={project.liveUrl} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>GitHub URL</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_githubUrl`}>GitHub URL</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_githubUrl`}
-                              render={({ field }) => <Input defaultValue={project.githubUrl} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_githubUrl`} defaultValue={project.githubUrl} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Live Text</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_liveText`}>Live Text</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_liveText`}
-                              render={({ field }) => <Input defaultValue={project.liveText} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_liveText`} defaultValue={project.liveText} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>GitHub Text</FormLabel>
+                          <FormLabel htmlFor={`${project._id}_githubText`}>GitHub Text</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${project._id}_githubText`}
-                              render={({ field }) => <Input defaultValue={project.githubText} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_githubText`} defaultValue={project.githubText} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -293,62 +347,62 @@ const AdminDashboard = () => {
                     <CardContent>
                       <div className="space-y-4">
                         <FormItem>
-                          <FormLabel>Company Name</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_companyName`}>Company Name</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_companyName`}
-                              render={({ field }) => <Input defaultValue={experience.companyName} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_companyName`} defaultValue={experience.companyName} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Position</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_position`}>Position</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_position`}
-                              render={({ field }) => <Input defaultValue={experience.position} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_position`} defaultValue={experience.position} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Logo</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_logo`}>Logo</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_logo`}
-                              render={({ field }) => <Input defaultValue={experience.logo} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_logo`} defaultValue={experience.logo} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Start Date</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_startDate`}>Start Date</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_startDate`}
-                              render={({ field }) => <Input defaultValue={experience.startDate} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_startDate`} defaultValue={experience.startDate} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>End Date</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_endDate`}>End Date</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_endDate`}
-                              render={({ field }) => <Input defaultValue={experience.endDate} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_endDate`} defaultValue={experience.endDate} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel htmlFor={`${experience._id}_description`}>Description</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_description`}
-                              render={({ field }) => <Input defaultValue={experience.description} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_description`} defaultValue={experience.description} {...field} />}
                             />
                           </FormControl>
                         </FormItem>

@@ -76,7 +76,7 @@ app.post('/api/admin/login', async (req, res) => {
     // In production, you should validate against a database
     if (username === process.env.ADMIN_USERNAME && 
         await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH)) {
-      const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '24h' });
       res.json({ token });
     } else {
       res.status(401).json({ message: 'Invalid credentials' });
