@@ -8,6 +8,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('projects');
   const [data, setData] = useState([]);
@@ -25,7 +27,7 @@ const AdminDashboard = () => {
 
   const fetchData = async (type) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/${type}`);
+      const response = await fetch(`${API_BASE_URL}/api/${type}`);
       const data = await response.json();
       setData(data);
       setLoading(false);
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
   const handleEdit = async (id, type, updatedData) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/admin/${type}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/${type}/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +47,7 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify(updatedData)
       });
-      
+
       if (response.ok) {
         // Refresh data immediately after successful update
         await fetchData(type);
@@ -57,16 +59,16 @@ const AdminDashboard = () => {
 
   const handleDelete = async (id, type) => {
     if (!confirm('Are you sure you want to delete this item?')) return;
-    
+
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/admin/${type}/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/${type}/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.ok) {
         // Refresh data immediately after successful deletion
         await fetchData(type);
@@ -79,7 +81,7 @@ const AdminDashboard = () => {
   const handleAdd = async (type, newData) => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/admin/${type}`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/${type}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
