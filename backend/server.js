@@ -19,6 +19,9 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Allow all IPs for MongoDB Atlas connection (for Vercel deployment)
+mongoose.set('strictQuery', false);
 app.use(express.json());
 
 // Connect to MongoDB
