@@ -68,8 +68,17 @@ app.get('/api/projects', async (req, res) => {
 
 app.get('/api/history', async (req, res) => {
   try {
-    const history = await History.find().sort({ date: -1 });
+    const history = await History.find({ type: { $ne: 'section' } }).sort({ date: -1 });
     res.json(history);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get('/api/history-section', async (req, res) => {
+  try {
+    const section = await History.findOne({ type: 'section' });
+    res.json(section ? { description: section.sectionDescription } : { description: '' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -283,6 +292,21 @@ app.delete('/api/admin/history/:id', authenticateToken, async (req, res) => {
   try {
     await History.findByIdAndDelete(req.params.id);
     res.json({ message: 'History deleted' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+app.put('/api/admin/history-section', authenticateToken, async (req, res) => {
+  try {
+    let section = await History.findOne({ type: 'section' });
+    if (!section) {
+      section = new History({ id: 0, type: 'section', sectionDescription: req.body.description });
+    } else {
+      section.sectionDescription = req.body.description;
+    }
+    await section.save();
+    res.json(section);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

@@ -12,12 +12,15 @@ export const ProjectCard = ({ project }) => {
         <div className="font-bold text-lg">{title || "Title"}</div>
         <div className="font-light text-sm text-stone-500 dark:text-stone-400">{date || "start-end"}</div>
         <div className="tracking-tighter leading-5 text-stone-600 dark:text-stone-400 flex-grow py-2">
-          {description}
+          {project.description}
         </div>
         <div className="mt-auto">
           <div className="flex flex-row flex-wrap gap-[4px]">
-            {(badges).map((badge, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">{badge}</Badge>
+            {badges?.map((badge, index) => (
+              <span key={index}>
+                <Badge variant="secondary" className="text-xs">{badge}</Badge>
+                {index < badges.length - 1 ? ', ' : ''}
+              </span>
             ))}
           </div>
           <div className="flex flex-row flex-wrap gap-[4px] pt-2">

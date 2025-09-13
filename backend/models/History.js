@@ -5,25 +5,28 @@ const historySchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  logo: {
+  type: {
     type: String,
-    required: true
+    enum: ['item', 'section'],
+    default: 'item'
+  },
+  logo: {
+    type: String
   },
   date: {
-    type: String,
-    required: true
+    type: String
   },
   title: {
-    type: String,
-    required: true
+    type: String
   },
   place: {
-    type: String,
-    required: true
+    type: String
   },
   info: {
-    type: String,
-    required: true
+    type: String
+  },
+  sectionDescription: {
+    type: String
   },
   githubUrl: {
     type: String

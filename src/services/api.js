@@ -58,3 +58,27 @@ export const getHistory = async () => {
     return [];
   }
 };
+
+export const getHistorySection = async () => {
+  try {
+    const response = await api.get('/history-section');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching history section:', error);
+    return { description: '' };
+  }
+};
+
+export const updateHistorySection = async (description, token) => {
+  try {
+    const response = await api.put('/admin/history-section', { description }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating history section:', error);
+    throw error;
+  }
+};

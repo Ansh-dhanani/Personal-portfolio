@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ModeToggle } from "@/components/ui/ModeToggle";
 import { Badge } from "@/components/ui/badge";
-import { getExperiences, getEducation, getSkills, getProjects, getHistory } from "@/services/api";
+import { getExperiences, getEducation, getSkills, getProjects, getHistory, getHistorySection } from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ExperienceUI } from "@/components/ui/ExperienceUI";
@@ -30,6 +30,7 @@ const Home = () => {
   const [skills, setSkills] = useState([]);
   const [projectsData, setProjectsData] = useState([]);
   const [historyData, setHistoryData] = useState([]);
+  const [historySection, setHistorySection] = useState({ description: '' });
 
   const [error, setError] = useState(null);
 
@@ -38,12 +39,13 @@ const Home = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const [experiencesData, educationData, skillsData, projectsData, historyData] = await Promise.all([
+        const [experiencesData, educationData, skillsData, projectsData, historyData, historySectionData] = await Promise.all([
           getExperiences(),
           getEducation(),
           getSkills(),
           getProjects(),
-          getHistory()
+          getHistory(),
+          getHistorySection()
         ]);
 
         setExperiences(experiencesData || []);
@@ -51,6 +53,7 @@ const Home = () => {
         setSkills(skillsData || []);
         setProjectsData(projectsData || []);
         setHistoryData(historyData || []);
+        setHistorySection(historySectionData || { description: '' });
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Failed to load data. Please try again later.');
@@ -451,9 +454,7 @@ const Home = () => {
                 I like building things
               </h1>
               <p className="pt-2 text-1xl text-stone-600 dark:text-stone-400 tracking-tight">
-                I actively participate in hackathons and collaborative tech
-                events, creating innovative projects in just 2–3 days with
-                passionate teams.
+                {historySection.description}
               </p>
             </div>
             <div>

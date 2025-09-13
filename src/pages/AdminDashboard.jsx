@@ -36,6 +36,8 @@ const AdminDashboard = () => {
     }
   };
 
+
+
   const handleEdit = async (id, type, updatedData) => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -156,7 +158,11 @@ const AdminDashboard = () => {
       const [id, field] = key.split('_', 2);
       if (currentIds.includes(id)) {
         if (!updates[id]) updates[id] = {};
-        updates[id][field] = formData[key];
+        let value = formData[key];
+        if (field === 'badges') {
+          value = value.split(',').map(badge => badge.trim()).filter(badge => badge.length > 0);
+        }
+        updates[id][field] = value;
       }
     });
 
@@ -262,7 +268,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_badges`}
-                              render={({ field }) => <Input id={`${project._id}_badges`} defaultValue={project.badges?.join(', ')} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_badges`} defaultValue={Array.isArray(project.badges) ? project.badges.join(', ') : project.badges || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -568,7 +574,11 @@ const AdminDashboard = () => {
               <Button onClick={() => handleAdd('history', {
                 title: 'New History Item',
                 date: '2023-01-01',
-                description: 'New history description'
+                info: 'New history info',
+                place: '',
+                logo: '',
+                githubUrl: '',
+                siteUrl: ''
               })}>
                 Add History
               </Button>
@@ -603,12 +613,52 @@ const AdminDashboard = () => {
                           </FormControl>
                         </FormItem>
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel>Info</FormLabel>
                           <FormControl>
                             <FormField
                               control={methods.control}
-                              name={`${history._id}_description`}
-                              render={({ field }) => <Input defaultValue={history.description} {...field} />}
+                              name={`${history._id}_info`}
+                              render={({ field }) => <Input defaultValue={history.info} {...field} />}
+                            />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Place</FormLabel>
+                          <FormControl>
+                            <FormField
+                              control={methods.control}
+                              name={`${history._id}_place`}
+                              render={({ field }) => <Input defaultValue={history.place} {...field} />}
+                            />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Logo</FormLabel>
+                          <FormControl>
+                            <FormField
+                              control={methods.control}
+                              name={`${history._id}_logo`}
+                              render={({ field }) => <Input defaultValue={history.logo} {...field} />}
+                            />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>GitHub URL</FormLabel>
+                          <FormControl>
+                            <FormField
+                              control={methods.control}
+                              name={`${history._id}_githubUrl`}
+                              render={({ field }) => <Input defaultValue={history.githubUrl} {...field} />}
+                            />
+                          </FormControl>
+                        </FormItem>
+                        <FormItem>
+                          <FormLabel>Site URL</FormLabel>
+                          <FormControl>
+                            <FormField
+                              control={methods.control}
+                              name={`${history._id}_siteUrl`}
+                              render={({ field }) => <Input defaultValue={history.siteUrl} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
