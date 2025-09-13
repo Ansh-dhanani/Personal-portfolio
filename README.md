@@ -8,10 +8,10 @@ I maked it using Shadcn UI.
 <div align="center">
 
 ### 🌙 Dark Mode
-![Dark Mode Screenshot](public/darkview.png)
+![Dark Mode Screenshot](public/Home.png)
 
 ### ☀️ Light Mode
-![Light Mode Screenshot](public/lightview.png)
+![Light Mode Screenshot](public/admin.png)
 
 ### 📱 Mobile View
 ![Mobile Screenshot](public/mobile.png)
