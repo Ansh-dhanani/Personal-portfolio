@@ -25,6 +25,20 @@ const AdminDashboard = () => {
     fetchData(activeTab);
   }, [activeTab, token, navigate]);
 
+  useEffect(() => {
+    if (data.length > 0) {
+      const defaultValues = {};
+      data.forEach(item => {
+        Object.keys(item).forEach(key => {
+          if (key !== '_id') {
+            defaultValues[`${item._id}_${key}`] = item[key];
+          }
+        });
+      });
+      methods.reset(defaultValues);
+    }
+  }, [data, activeTab, methods]);
+
   const fetchData = async (type) => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/${type}`);
@@ -158,11 +172,7 @@ const AdminDashboard = () => {
       const [id, field] = key.split('_', 2);
       if (currentIds.includes(id)) {
         if (!updates[id]) updates[id] = {};
-        let value = formData[key];
-        if (field === 'badges') {
-          value = value.split(',').map(badge => badge.trim()).filter(badge => badge.length > 0);
-        }
-        updates[id][field] = value;
+        updates[id][field] = formData[key];
       }
     });
 
@@ -228,7 +238,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_title`}
-                              render={({ field }) => <Input id={`${project._id}_title`} defaultValue={project.title} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_title`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -238,7 +248,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_description`}
-                              render={({ field }) => <Input id={`${project._id}_description`} defaultValue={project.description} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_description`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -248,7 +258,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_video`}
-                              render={({ field }) => <Input id={`${project._id}_video`} defaultValue={project.video} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_video`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -258,7 +268,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_date`}
-                              render={({ field }) => <Input id={`${project._id}_date`} type="date" defaultValue={project.date?.split('T')[0]} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_date`} type="date" value={field.value ? field.value.split('T')[0] : ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -268,7 +278,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_badges`}
-                              render={({ field }) => <Input id={`${project._id}_badges`} defaultValue={Array.isArray(project.badges) ? project.badges.join(', ') : project.badges || ''} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_badges`} value={Array.isArray(field.value) ? field.value.join(', ') : field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -278,7 +288,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_liveUrl`}
-                              render={({ field }) => <Input id={`${project._id}_liveUrl`} defaultValue={project.liveUrl} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_liveUrl`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -288,7 +298,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_githubUrl`}
-                              render={({ field }) => <Input id={`${project._id}_githubUrl`} defaultValue={project.githubUrl} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_githubUrl`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -298,7 +308,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_liveText`}
-                              render={({ field }) => <Input id={`${project._id}_liveText`} defaultValue={project.liveText} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_liveText`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -308,13 +318,13 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${project._id}_githubText`}
-                              render={({ field }) => <Input id={`${project._id}_githubText`} defaultValue={project.githubText} {...field} />}
+                              render={({ field }) => <Input id={`${project._id}_githubText`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
 
                         <div className="flex justify-end space-x-4 mt-4">
-                          <Button type="submit">Save</Button>
+                          <Button onClick={() => methods.handleSubmit(onSubmit)()}>Save</Button>
                           <Button variant="destructive" onClick={() => handleDelete(project._id, 'projects')}>
                             Delete
                           </Button>
@@ -358,7 +368,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_companyName`}
-                              render={({ field }) => <Input id={`${experience._id}_companyName`} defaultValue={experience.companyName} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_companyName`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -368,7 +378,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_position`}
-                              render={({ field }) => <Input id={`${experience._id}_position`} defaultValue={experience.position} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_position`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -378,7 +388,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_logo`}
-                              render={({ field }) => <Input id={`${experience._id}_logo`} defaultValue={experience.logo} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_logo`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -388,7 +398,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_startDate`}
-                              render={({ field }) => <Input id={`${experience._id}_startDate`} defaultValue={experience.startDate} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_startDate`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -398,7 +408,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_endDate`}
-                              render={({ field }) => <Input id={`${experience._id}_endDate`} defaultValue={experience.endDate} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_endDate`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -408,13 +418,13 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${experience._id}_description`}
-                              render={({ field }) => <Input id={`${experience._id}_description`} defaultValue={experience.description} {...field} />}
+                              render={({ field }) => <Input id={`${experience._id}_description`} value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                       </div>
                       <div className="flex justify-end space-x-4 mt-4">
-                        <Button type="submit">Save</Button>
+                        <Button onClick={() => methods.handleSubmit(onSubmit)()}>Save</Button>
                         <Button variant="destructive" onClick={() => handleDelete(experience._id, 'experiences')}>
                           Delete
                         </Button>
@@ -456,7 +466,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_companyName`}
-                              render={({ field }) => <Input defaultValue={education.companyName} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -466,7 +476,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_position`}
-                              render={({ field }) => <Input defaultValue={education.position} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -476,7 +486,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_logo`}
-                              render={({ field }) => <Input defaultValue={education.logo} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -486,7 +496,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_startDate`}
-                              render={({ field }) => <Input defaultValue={education.startDate} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -496,7 +506,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_endDate`}
-                              render={({ field }) => <Input defaultValue={education.endDate} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -506,13 +516,13 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${education._id}_description`}
-                              render={({ field }) => <Input defaultValue={education.description} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                       </div>
                       <div className="flex justify-end space-x-4 mt-4">
-                        <Button type="submit">Save</Button>
+                        <Button onClick={() => methods.handleSubmit(onSubmit)()}>Save</Button>
                         <Button variant="destructive" onClick={() => handleDelete(education._id, 'education')}>
                           Delete
                         </Button>
@@ -549,13 +559,13 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${skill._id}_tech`}
-                              render={({ field }) => <Input defaultValue={skill.tech} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                       </div>
                       <div className="flex justify-end space-x-4 mt-4">
-                        <Button type="submit">Save</Button>
+                        <Button onClick={() => methods.handleSubmit(onSubmit)()}>Save</Button>
                         <Button variant="destructive" onClick={() => handleDelete(skill._id, 'skills')}>
                           Delete
                         </Button>
@@ -598,7 +608,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_title`}
-                              render={({ field }) => <Input defaultValue={history.title} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -608,7 +618,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_date`}
-                              render={({ field }) => <Input defaultValue={history.date} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -618,7 +628,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_info`}
-                              render={({ field }) => <Input defaultValue={history.info} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -628,7 +638,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_place`}
-                              render={({ field }) => <Input defaultValue={history.place} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -638,7 +648,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_logo`}
-                              render={({ field }) => <Input defaultValue={history.logo} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -648,7 +658,7 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_githubUrl`}
-                              render={({ field }) => <Input defaultValue={history.githubUrl} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
@@ -658,13 +668,13 @@ const AdminDashboard = () => {
                             <FormField
                               control={methods.control}
                               name={`${history._id}_siteUrl`}
-                              render={({ field }) => <Input defaultValue={history.siteUrl} {...field} />}
+                              render={({ field }) => <Input value={field.value || ''} {...field} />}
                             />
                           </FormControl>
                         </FormItem>
                       </div>
                       <div className="flex justify-end space-x-4 mt-4">
-                        <Button type="submit">Save</Button>
+                        <Button onClick={() => methods.handleSubmit(onSubmit)()}>Save</Button>
                         <Button variant="destructive" onClick={() => handleDelete(history._id, 'history')}>
                           Delete
                         </Button>
