@@ -102,8 +102,8 @@ function App() {
 const [experiences] = useState([
   {
     companyName: "Freelance / Personal Projects",
-    position: "Frontend Developer & Designer",
-    logo: "https://picsum.photos/150/150?random=1",
+    position: "Frontend Developer & Graphics Designer",
+    logo: "./Freelancer.jpg",
     startDate: "2023",
     endDate: "Present",
     description:
@@ -112,7 +112,7 @@ const [experiences] = useState([
   {
     companyName: "Hackathon Projects",
     position: "Full Stack Developer",
-    logo: "https://picsum.photos/150/150?random=2",
+    logo: "./Hackathon.jpg",
     startDate: "2023",
     endDate: "Present",
     description:
@@ -150,10 +150,24 @@ const [Skills] = useState([
 const [projectsData] = useState([
   {
     id: 1,
+    title: "Reactbits - Contribution",
+    description:
+    //A well Known react open source component library Reactbits have my contributions , I made a \"Gradual blur\" component for it which is used to create a smooth blur effect on the top of the page or any element
+      "I made contributions to Reactbits , a well-known open-source React component library (24k stars). I developed a \"Gradual Blur\" component that creates a smooth blur effect at the top of the page or any element, enhancing visual appeal and user experience. among top 8 contributors on GitHub.",
+    video: "./gradualblur1 (2).mp4", // Add if you have a demo video
+    date: "2024-07-01",
+    badges: ["React", "AI/ML", "Netlify", "Healthcare"],
+    liveUrl: "https://reactbits.dev/animations/gradual-blur",
+    githubUrl: "https://github.com/DavidHDev/react-bits/pull/425",
+    liveText: "Live Demo",
+    githubText: "GitHub ",
+  },
+  {
+    id: 1,
     title: "Scanix AI - Brain Tumor Detection",
     description:
       "An AI-powered healthcare tool for brain tumor detection. Built in React, this web app leverages advanced ML models to analyze medical images and provide fast, accurate predictions. Awarded in Tech-Tonic Hackathon.",
-    video: "", // Add if you have a demo video
+    video: "./scanix.mp4", // Add if you have a demo video
     date: "2024-07-01",
     badges: ["React", "AI/ML", "Netlify", "Healthcare"],
     liveUrl: "https://scanix-ai.netlify.app",
@@ -162,21 +176,22 @@ const [projectsData] = useState([
     githubText: "GitHub",
   },
   {
-    id: 2,
-    title: "CheckWise - AI-Powered CBC Analysis",
+    id: 1,
+    title: "NPM package - Gradual blur",
     description:
-      "Automated CBC report diagnosis using state-of-the-art AI. The app analyzes blood test reports and suggests possible diseases, streamlining medical workflows. Built for the Oodo Hackathon.",
-    video: "",
-    date: "2024-03-15",
+    // i made a npm gradual blur package with support for react,svelte,sve with highly customizable effect 
+      "I made a NPM gradual blur package as an animation effect with supprot for React, Svelte, Sve and with and without typescript in react.",
+    video: "./package.mp4", // Add if you have a demo video
+    date: "2024-07-01",
     badges: ["React", "AI/ML", "Netlify", "Healthcare"],
-    liveUrl: "https://check-wise.netlify.app/",
-    githubUrl: "https://github.com/Ansh-dhanani/CheckwiseAI",
+    liveUrl: "https://reactbits.dev/animations/gradual-blur",
+    githubUrl: "https://github.com/DavidHDev/react-bits/pull/425",
     liveText: "Live Demo",
-    githubText: "GitHub",
+    githubText: "GitHub ",
   },
   {
     id: 3,
-    title: "React Template (WIP)",
+    title: "React Templates ,Components ,Fonts",
     description:
       "A collection of modern React templates powered by Vite. Includes free premium fonts, templates, and reusable components to kickstart frontend projects quickly.",
     video: "/public/v1.mp4",
@@ -417,8 +432,7 @@ const [historyData] = useState([
               </div>
               <div className="relative min-w-20 max-w-[100px] max-[458px]:hidden sm:max-w-[300px] ">
                 <img
-                  src="/Ansh.jpg"
-                  alt="Profile picture of Ansh"
+                  src="/Ansh.png"
                   className="rounded-full aspect-square w-full object-cover"
                 />
               </div>

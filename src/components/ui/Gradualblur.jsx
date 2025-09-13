@@ -4,13 +4,13 @@ import * as math from 'mathjs';
 const GradualBlurEffect = () => {
   // The number of <div> elements inside <div class="top-blur">
   // (4 to 6 seems to be about the sweet spot)
-  const divCount = 5;
+  const divCount = 6;
   // How strong the blur is (default: 1)
   const blurStrength = 2;
   // Whether to blur the backdrop exponentially or linearly
   const exponentialBlur = true;
   // How tall the blur effect is
-  const blurHeight = '7rem';
+  const blurHeight = '9rem';
 
   const generateBlurDivs = () => {
     const divs = [];
